@@ -1,0 +1,96 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Kê toa{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.user_role.name == 'DOCTOR' %}
+   <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex">
+                <h1 class="text-danger">Kê toa thuốc</h1>
+            </div>
+            <div class="d-flex justify-content-center">
+                <form  method="POST">
+                    <input name="exam_id" type="hidden" value="{{exam_id}}"/>
+                    <div class="form-group">
+                        <label>Thuốc</label>
+                         <select class="form-control" name="medicine">
+                             {% for m in medicine %}
+                             <option>{{m.name}}</option>
+                             {% endfor %}
+                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input type="number"  class="from-control" name="amount" min="0" max="100" required class="form-control w-75">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                         <label>Cách dùng</label>
+                         <input type="text"  class="from-control" name="using_method" class="form-control w-75">
+                    </div>
+                    <br>
+                     <input type="submit" value="Thêm" class="btn btn-success"/>
+                    <br>
+                    <br>
+                    {% if exam_med %}
+                    <a href="{{url_for('patient_list')}}" class="button-75">Thoát</a>
+                    {% endif%}
+                    <br>
+                    <br>
+                </form>
+            </div>
+        </div>
+       <div class="row col-md-6">
+        <div>
+            <h1 class="col-12 text-center text-info">Thông tin phiếu khám</h1>
+            <br>
+            <div class="form-group">
+                <div class="d-flex">
+                    <div class="col-8">Họ tên: {{info[0]}}</div>
+                    <div class="col-6">Ngày khám:  {{info[1].strftime('%d-%m-%Y')}}</div>
+                </div>
+                <br>
+               <div class="d-flex">
+                    <div class="col-8">Triệu chứng:  {{info[2]}}</div>
+                    <div class="col-12">Dự đoán bệnh:  {{info[3]}}</div>
+               </div>
+            </div>
+            <div class="form-group">
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>STT</th>
+                            <th>Thuốc</th>
+                            <th>Đơn vị</th>
+                            <th>Số lượng</th>
+                            <th>Cách dùng</th>
+                            <th></th>
+                        </tr>
+                        {% for em in exam_med %}
+                        <tr>
+                            <td></td>
+                            <td>{{em[1]}}</td>
+                            <td>{{em[2]}}</td>
+                            <td>{{em[3]}}</td>
+                            <td>{{em[4]}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+   </div>
+{% else %}
+    <section>
+          <br/> <br/>
+          <div class="container">
+              <div class="text-info text-center">
+                  <h1>BẠN KHÔNG CÓ QUYỀN TRUY CẬP</h1>
+              </div>
+          </div>
+          <br/> <br/>
+      </section>
+{% endif %}
+{% endblock %}

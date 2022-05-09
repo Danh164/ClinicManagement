@@ -1,0 +1,95 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đăng kí lịch khám{% endblock %}
+
+{% block content %}
+  <body onload="getDateMM()"></body>
+  <section>
+      <div class="container mb-4">
+          <div class="mt-4">
+            <div class="d-flex justify-content-center">
+              <h1>ĐẶT LỊCH KHÁM</h1>
+            </div>
+          {% if err_msg %}
+          <div class="alert alert-danger">
+              <h2>{{ err_msg }}</h2>
+          </div>
+          {% endif %}
+          {% if msg %}
+          <div class="alert alert-success">
+              <h2>{{ msg }}</h2>
+          </div>
+          {% endif %}
+          {% if current_user.is_authenticated %}
+                <form method="post">
+                    <div class="form-group">
+                        <label for="name">Họ tên khách hàng</label>
+                        <input type="text" id="name" name="name" value="{{ current_user.name }}" readonly class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">Số điện thoại</label>
+                        <input type="text" id="tel" name="tel" class="form-control" readonly maxlength="10" minlength="10" value="{{current_user.phone}}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" id="address" class="form-control" readonly name="address" value="{{ current_user.address }}">
+                    </div>
+                    <div class="form-inline w-100">
+                        <div class="form-group w-75">
+                            <label for="birth" class="mr-2">Ngày sinh</label>
+                            <input class="form-control w-75" id="birth" readonly name="birth" type="date" value="{{current_user.dob }}">
+                        </div>
+                        <div class="form-group w-25">
+                            <label class="mr-2">Giới tính:</label>
+                            <input  checked="checked" disabled type="radio" id="one" name="sex" value="Nam"/>
+                            <label for="one" class="mx-1">Nam</label>
+                            <input  type="radio" id="two" disabled name="sex" value="Nữ" {% if current_user.sex.name=='FEMALE' %} checked="checked"{% endif %}/>
+                            <label for="two" class="mx-1">Nữ</label>
+                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Chọn ngày khám</label>
+                        <input class="form-control" id="date" name="date" type="date" required>
+                    </div>
+                    <div>
+                        <input type="submit" id="submitbutton" value="Đăng ký" class="btn  btn-primary">
+                    </div>
+                </form>
+          {% else %}
+               <form method="post">
+                  <div class="form-group">
+                    <label for="name">Họ tên khách hàng</label>
+                    <input type="text"  name="name"  class="form-control" required/>
+                  </div>
+                  <div class="form-group">
+                    <label for="tel">Số điện thoại</label>
+                    <input type="text"  name="tel" class="form-control" required maxlength="10" minlength="10"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+                    <input type="text"  class="form-control" name="address"required>
+                  </div>
+                  <div class="form-inline w-100">
+                    <div class="form-group w-75">
+                      <label for="birth" class="mr-2">Ngày sinh</label>
+                      <input class="form-control w-75" name="birth" type="date" required>
+                    </div>
+                    <div class="form-group w-25">
+                      <label class="mr-2">Giới tính:</label>
+                        <input  checked="checked" type="radio"  name="sex" value="Nam"/>
+                        <label for="one" class="mx-1">Nam</label>
+                        <input  type="radio"  name="sex" value="Nữ"/>
+                        <label for="two" class="mx-1">Nữ</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="date">Chọn ngày khám</label>
+                    <input class="form-control"  name="date" type="date" required>
+                  </div>
+                  <div>
+                    <input type="submit" value="Xác nhận đăng ký" class="btn btn-primary">
+                  </div>
+                </form>
+              {% endif %}
+    </section>
+{% endblock %}

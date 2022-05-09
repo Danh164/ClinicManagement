@@ -1,0 +1,46 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Kê toa{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.user_role.name == 'DOCTOR' %}
+    <section>
+        <div class="container my-4">
+            <div class="d-flex justify-content-center">
+                <h1 class="text-uppercase">Tạo Phiếu Khám</h1>
+            </div>
+            <div>
+                <form  method="POST">
+                    {% for r in registration %}
+                    <div>
+                        <label class="mr-5">Họ Tên: {{r.name}}</label>
+                        <label class="mr-5">Ngày khám: {{r.examination_date}}</label>
+                    </div>
+                    <div>
+                        <label >Triệu chứng</label>
+                        <input type="text" name="sympton" required class="form-control w-75">
+                        <label>Dự đoán bệnh</label>
+                        <input type="text" name="disease" required class="form-control w-75">
+                        <input type="hidden" name="exam_id" class="form-control col-4" value="{{ exam_id }}">
+                    </div>
+                    {% endfor %}
+                    <br>
+                     <div>
+                        <button class="button-75" role="button"><span class="text">Tạo</span></button>
+                     </div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% else %}
+    <section>
+          <br/> <br/>
+          <div class="container">
+              <div class="text-info text-center">
+                  <h1>BẠN KHÔNG CÓ QUYỀN TRUY CẬP</h1>
+              </div>
+          </div>
+          <br/> <br/>
+      </section>
+{% endif %}
+{% endblock %}

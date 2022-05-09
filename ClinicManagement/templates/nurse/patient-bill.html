@@ -1,0 +1,64 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Danh sách hoá đơn{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.user_role.name == 'NURSE' %}
+    <section>
+        <div class="container my-4">
+            <div class="d-flex justify-content-center">
+                <h2 class="text-uppercase">Danh sách bệnh nhân chưa thanh toán</h2>
+            </div>
+            <div>
+                <form class="form-inline" method="POST">
+                    <label class="mr-3" for="tel">Số điện thoại</label>
+                    <input type="tel" id="tel" name="tel" class="form-control w-75">
+                    <button class="button-75" role="button"><span class="text">Tìm</span></button>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid mb-5">
+            <table class="table table-hover b">
+                <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Mã</th>
+                      <th scope="col">Họ tên</th>
+                      <th scope="col">Giới tính</th>
+                      <th scope="col">Số điện thoại</th>
+                      <th scope="col">Địa chỉ</th>
+                      <th scope="col">Ngày khám</th>
+                      <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for l in list %}
+                    <tr>
+                      <td></td>
+                      <td>{{ l.name }}</td>
+                       {% if l.sex.name == 'MALE' %}
+                        <td>Nam</td>
+                        {% else %}
+                         <td>Nữ</td>
+                        {% endif %}
+                      <td>{{ l.phone }}</td>
+                      <td>{{ l.address }}</td>
+                      <td>{{ l.examination_date }}</td>
+                      <td><a href="{{url_for('bill', reg_id=l.id) }}"><input type="submit" id="submitbutton" value="Thanh toán" class="button-75"></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% else %}
+    <section>
+          <br/> <br/>
+          <div class="container">
+              <div class="text-info text-center">
+                  <h1>BẠN KHÔNG CÓ QUYỀN TRUY CẬP</h1>
+              </div>
+          </div>
+          <br/> <br/>
+      </section>
+{% endif %}
+{% endblock %}

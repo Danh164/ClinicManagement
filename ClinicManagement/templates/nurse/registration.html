@@ -1,0 +1,60 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đăng kí lịch khám{% endblock %}
+
+{% block content %}
+  <body onload="getDateMM()"></body>
+  <section>
+      <div class="container mb-4">
+          <div class="mt-4">
+            <div class="d-flex justify-content-center">
+              <h1>ĐẶT LỊCH KHÁM</h1>
+            </div>
+          {% if err_msg %}
+          <div class="alert alert-danger">
+              <h2>{{ err_msg }}</h2>
+          </div>
+          {% endif %}
+          {% if msg %}
+          <div class="alert alert-success">
+              <h2>{{ msg }}</h2>
+          </div>
+          {% endif %}
+            <form  name="theform" method="post">
+              <div class="form-group">
+                <label for="name">Họ tên khách hàng</label>
+                <input type="text" id="name" name="name" placeholder="Họ tên người khám" class="form-control" required/>
+              </div>
+              <div class="form-group">
+                <label for="tel">Số điện thoại</label>
+                <input type="text" id="tel" name="tel" class="form-control" required maxlength="10" minlength="10" placeholder="Điện thoại"/>
+              </div>
+              <div class="form-group">
+                <label for="address">Địa chỉ</label>
+                <input type="text" id="address" class="form-control" name="address" placeholder="Địa chỉ" required>
+              </div>
+              <div class="form-inline w-100">
+                <div class="form-group w-75">
+                  <label for="birth" class="mr-2">Ngày sinh</label>
+                  <input class="form-control w-75" id="birth" name="birth" type="date" required>
+                </div>
+                <div class="form-group w-25">
+                  <label class="mr-2">Giới tính:</label>
+                    <input checked="checked" type="radio" id="one" name="sex" value="Nam"/>
+                    <label class="mx-1">Nam</label>
+                    <input type="radio"  name="sex" value="Nữ"/>
+                    <label class="mx-1">Nữ</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="date">Chọn ngày khám</label>
+                <input class="form-control" id="date" name="date" type="date" required>
+              </div>
+              <div>
+                <input type="submit" id="submitbutton" onclick="confirmForm(event)" value="Xác nhận đăng ký" class="btn btn-primary">
+              </div>
+            </form>
+        </div>
+      </div>
+  </section>
+{% endblock %}

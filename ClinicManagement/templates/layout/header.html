@@ -1,0 +1,73 @@
+<header>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <a class="navbar-brand" href="/">
+        <img src="https://res.cloudinary.com/dqifjhxxg/image/upload/v1642228448/healthcare_fngeet.png" alt="Logo" style="width:40px;">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          {% if current_user.is_authenticated and current_user.user_role.name == 'DOCTOR'%}
+          <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('patient_list')}}">Lập phiếu khám</a>
+          </li>
+          {% elif current_user.is_authenticated and current_user.user_role.name == 'NURSE' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('nurse_registration')}}">Đặt lịch khám</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('user_booking')}}">Đặt lịch khám</a>
+          </li>
+          {% endif %}
+            {% if current_user.is_authenticated %}
+                <a class="nav-link text-info" href="{{url_for('user_update')}}">
+                    {% if current_user.avatar %}
+                        <img class="rounded-circle" src="{{current_user.avatar}}" width="30px" alt="{{current_user.name}}">
+                    {% else %}
+                        <img class="rounded-circle" width="30px" src="https://res.cloudinary.com/dqifjhxxg/image/upload/v1639016922/xcys5y9nyxj6dwbji15w.jpg" alt="{{current_user.name}}">
+                    {% endif %}
+                    {{ current_user.username }}
+                </a>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('user_logout') }}">Đăng xuất</a>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                 <a class="nav-link text-danger" href="{{ url_for('user_register') }}">Đăng kí</a>
+              </li>
+                <li class="nav-item">
+                <a class="nav-link text-success" href="{{ url_for('user_signin') }}">Đăng nhập</a>
+              </li>
+            {% endif %}
+        </ul>
+      </div>
+    </nav>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="nav">
+    <button class="navbar-toggler ml-5 border border-light rounded-circle" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="fas fa-ellipsis-h text-white text-right"></span>
+    </button>
+    <div class="ml-auto mr-auto nav-items-custom">
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav  ml-lg-auto">
+        {% if current_user.is_authenticated %}
+
+        {% if current_user.user_role.name == 'NURSE'%}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('confirm_booking')}}">Xác nhận phiếu đăng kí
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('booking_list')}}">Lập danh sách khám</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('patient_bill')}}">Thanh toán hóa đơn</a>
+        </li>
+        {% endif %}
+        {% endif %}
+      </ul>
+      </div>
+    </div>
+  </nav>
+</header>

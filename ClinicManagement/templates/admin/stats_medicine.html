@@ -1,0 +1,102 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+{% if current_user.is_authenticated and current_user.user_role.name == 'ADMIN'%}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let labels = [], info = []
+    let colors = []
+    let bdColors = []
+    let r,g,b;
+    {% for s in stats %}
+        labels.push('{{s[1]}}')
+        info.push({{s[4]}})
+        r = Math.random()*255
+        g = Math.random()*255
+        b = Math.random()*255
+        colors.push(`rgba(${r}, ${g}, ${b}, 0.5)`)
+        bdColors.push(`rgba$({r}, ${g}, ${b}, 0.5)`)
+    {% endfor %}
+    window.onload = function(){
+        const ctx = document.getElementById("myBillChart").getContext('2d')
+        const myBillChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Thống kê doanh thu theo tháng',
+                    data: info,
+                    backgroundColor: colors,
+                    borderColor: bdColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+<h2 class="text-center text-info">BÁO CÁO SỬ DỤNG THUỐC</h2>
+<br>
+<div class="row">
+    <div class="col-md-7">
+        {% if year and month %}
+        <h3>Tần suất sử dụng thuốc {{month}}/{{year}}</h3>
+        {% else %}
+        <h3>Tần suất sử dụng thuốc</h3>
+        {% endif %}
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên</th>
+                    <th>Đơn vị</th>
+                    <th>Số lượng</th>
+                    <th>Số lần</th>
+                </tr>
+                {% for s in stats %}
+                <tr>
+                    <td>{{s[0]}}</td>
+                    <td>{{s[1]}}</td>
+                    <td>{{s[2]}}</td>
+                    <td>{{s[3]}}</td>
+                    <td>{{s[4]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h5 class="text-info"></h5>
+    </div>
+    <div class="col-md-5">
+        <form>
+            <span>Tháng:</span>
+            <select name="month">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+            </select>
+            <label>Năm: </label>
+            <input type="number" name="year" placeholder="Nhập năm..." required/>
+            <input type="submit" class="btn btn-info" value="Thống kế">
+            <canvas id="myBillChart"></canvas>
+        </form>
+    </div>
+</div>
+{% else %}
+<h1 class="text-center text-danger"> ĐĂNG NHẬP QUẢN TRỊ </h1>
+{% endif %}
+{% endblock %}
